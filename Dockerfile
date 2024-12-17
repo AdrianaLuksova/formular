@@ -15,9 +15,13 @@ COPY . .
 
 # Set the environment variable for Flask
 ENV FLASK_APP=app.py
+ENV FLASK_ENV=development  # For development or change to 'production' in production
 
 # Expose the port the app runs on
 EXPOSE 5000
 
-# Run the application
-CMD ["flask", "run", "--host=0.0.0.0"]
+# Install Gunicorn for production (if necessary)
+RUN pip install gunicorn
+
+# Run the application using Gunicorn
+CMD ["gunicorn", "-b", "0.0.0.0:5000", "app:app"]
